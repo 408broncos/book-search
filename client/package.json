@@ -15,15 +15,14 @@
     "react-bootstrap": "1.0.1",
     "react-dom": "^16.13.1",
     "react-router-dom": "^6.11.2",
-    "react-scripts": "^4.0.2"
+    "react-scripts": "^4.0.2",
+    "webpack": "4.44.2"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "postinstall": "npm run webpack",
-    "webpack": "webpack"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -39,8 +38,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "webpack-cli": "^5.1.1"
   }
 }
