@@ -1,8 +1,6 @@
 const express = require("express");
 const path = require("path");
-const db = require("./config/connection");
 const { ApolloServer } = require("apollo-server-express");
-
 const { typeDefs, resolvers } = require("./schemas");
 const { authMiddleware } = require("./utils/auth");
 
@@ -23,17 +21,25 @@ async function startApolloServer() {
   app.use(express.urlencoded({ extended: true }));
   app.use(express.json());
 
-  // if we're in production, serve client/build as static assets
+  // Serve static assets if in production
   if (process.env.NODE_ENV === "production") {
     app.use(express.static(path.join(__dirname, "../client/build")));
+    app.get("*", (req, res) => {
+      res.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
+    });
   }
 
-  app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "../client/build/index.html"));
+  // Connect to MongoDB and start the server
+  await mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/booksearch", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+    useFindAndModify: false,
   });
 
-  db.once("open", () => {
-    app.listen(PORT, () => console.log(`🌍 Now listening on localhost:${PORT}`));
+  app.listen(PORT, () => {
+    console.log(`🌍 Server listening on http://localhost:${PORT}`);
+    console.log(`🚀 GraphQL server ready at http://localhost:${PORT}${server.graphqlPath}`);
   });
 }
 
